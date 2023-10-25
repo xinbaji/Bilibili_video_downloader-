@@ -3,7 +3,7 @@
 能下载哔哩哔哩上的各种视频~
 可一次扫码后永久保存登录信息，下次免登录！下载高画质！
 
-特别精美的图形化界面
+特别精美的图形化界面（误
 
 <img width="530" alt="屏幕截图 2023-10-25 211712" src="https://github.com/xinbaji/Bilibili_video_downloader-/assets/49865753/590eef4b-56b3-4ca2-b102-c8367935a0b6">
 
