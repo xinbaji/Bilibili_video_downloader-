@@ -14,7 +14,7 @@ import time
 from PIL import Image
 from PySide6.QtWidgets import QHBoxLayout, QTableWidgetItem, QApplication, QMainWindow, QTextBrowser
 from PySide6.QtCore import Signal, QObject
-from PySide6.QtGui import QImage,QPixmap
+from PySide6.QtGui import QImage, QPixmap
 from ui_main import Ui_Form
 from threading import Thread
 
@@ -54,24 +54,23 @@ class bilibili_Download(QMainWindow):
         sign.text_clear.connect(self.clearGui)
         sign.video_list_signal.connect(self.input_video_info)
 
-
         self.remainfile = False
-        self.islogin=False
+        self.islogin = False
         self.session = requests.session()
         self.headers = {
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36 Edg/116.0.1938.29',
             'origin': 'https://www.bilibili.com'
         }
         os.makedirs("Bilibili_Output", exist_ok=True)
-        self.cookies_dict=self.get_cookies_dict()
-
+        self.cookies_dict = self.get_cookies_dict()
 
         self.cid_url = "https://api.bilibili.com/x/player/pagelist?bvid="
         self.download_list = []
-        self.videoCount=-1
-        self.mergeQueue=[]
+        self.videoCount = -1
+        self.mergeQueue = []
 
         self.thread_merge_video()
+
     def remain_file(self):
         if self.ui.remain_file.isChecked():
             self.remainfile = True
@@ -79,10 +78,11 @@ class bilibili_Download(QMainWindow):
     def printToGui(self, fb, text):
         fb.append(str(text))
         fb.ensureCursorVisible()
-    def clearGui(self,fb):
+
+    def clearGui(self, fb):
         fb.clear()
 
-    def isBilibiliUrl(self, url)-> bool:
+    def isBilibiliUrl(self, url) -> bool:
         '''
         判断是否为B站地址
         :param url: 用户输入的地址
@@ -128,8 +128,6 @@ class bilibili_Download(QMainWindow):
         table.setItem(row, 2, QTableWidgetItem(title))
         self.setLayout(layout)
 
-
-
     @property
     def add_analyze_url(self):
         url = self.ui.video_url_input.toPlainText()
@@ -154,8 +152,8 @@ class bilibili_Download(QMainWindow):
             tree = etree.HTML(self.session.get(url, headers=self.headers).text)
             title = tree.xpath('//*[@id="viewbox_report"]/div[1]/div/h1/text()')[0]
 
-            for i_num in range(0,len(data['data']),1):
-                i=data['data'][i_num]
+            for i_num in range(0, len(data['data']), 1):
+                i = data['data'][i_num]
                 avid = \
                     json.loads(
                         self.session.get(avid_url + str(i['cid']) + "&bvid=" + bv, headers=self.headers).text)[
@@ -163,7 +161,7 @@ class bilibili_Download(QMainWindow):
                         'aid']
 
                 dic = {'aid': avid, 'bvid': bv, 'cid': i['cid'], 'epid': "", 'name': i['part'],
-                       'title': title,'num':i_num
+                       'title': title, 'num': i_num
                        }
                 dic['mode'] = 'bv'
                 dic['url'] = 'http://www.bilibili.com/video/' + str(bv) + "/"
@@ -176,15 +174,19 @@ class bilibili_Download(QMainWindow):
             tree = etree.HTML(data)
             ep_data = tree.xpath('//*[@id="__NEXT_DATA__"]/text()')[0]
             ep_data = json.loads(ep_data)
-            for i_num in range(0,len(ep_data['props']['pageProps']['dehydratedState']['queries'][0]['state']['data']['seasonInfo']['mediaInfo'][
-                'episodes']),1):
-                i=ep_data['props']['pageProps']['dehydratedState']['queries'][0]['state']['data']['seasonInfo']['mediaInfo'][
-                'episodes'][i_num]
+            for i_num in range(0, len(
+                    ep_data['props']['pageProps']['dehydratedState']['queries'][0]['state']['data']['seasonInfo'][
+                        'mediaInfo'][
+                        'episodes']), 1):
+                i = ep_data['props']['pageProps']['dehydratedState']['queries'][0]['state']['data']['seasonInfo'][
+                    'mediaInfo'][
+                    'episodes'][i_num]
                 dic = {'aid': i['aid'], 'bvid': i['bvid'], 'cid': i['cid'], 'epid': i['ep_id'],
                        'name': i['playerEpTitle'],
                        'title':
-                           ep_data['props']['pageProps']['dehydratedState']['queries'][0]['state']['data']['seasonInfo']['mediaInfo'][
-                               'title'],'num':i_num}
+                           ep_data['props']['pageProps']['dehydratedState']['queries'][0]['state']['data'][
+                               'seasonInfo']['mediaInfo'][
+                               'title'], 'num': i_num}
                 dic['mode'] = 'ep'
                 dic['url'] = 'https://www.bilibili.com/bangumi/play/ep' + str(i['ep_id'])
 
@@ -197,10 +199,9 @@ class bilibili_Download(QMainWindow):
         self.ui.video_url_input.setText('')
 
     def start_download(self):
-        self.videoCount=len(self.download_list)
+        self.videoCount = len(self.download_list)
         for i in self.download_list:
             self.thread_start_download(i)
-
 
     def download(self, dic):
         quality1 = self.ui.quality.currentText()
@@ -230,11 +231,11 @@ class bilibili_Download(QMainWindow):
 
         quality = js['data']['accept_quality'][quality_num]
         audio_url = js['data']['dash']['audio'][0]['baseUrl']
-        video_url=js['data']['dash']['video'][0]['baseUrl']
-        num=js['data']['dash']['video'][0]['id']
+        video_url = js['data']['dash']['video'][0]['baseUrl']
+        num = js['data']['dash']['video'][0]['id']
         for i in js['data']['dash']['video']:
             if i['id'] == quality:
-                num=i['id']
+                num = i['id']
                 video_url = i['baseUrl']
 
                 sign.text_print.emit(self.ui.info, "[Download]正在下载：" + js['data']['accept_description'][
@@ -242,14 +243,14 @@ class bilibili_Download(QMainWindow):
                 break
         if self.islogin == False:
             sign.text_print.emit(self.ui.info, "[Download]未登录，默认下载360P" + "...")
-            sign.text_print.emit(self.ui.info, "[Download]正在下载：" + '360P'+ "...")
+            sign.text_print.emit(self.ui.info, "[Download]正在下载：" + '360P' + "...")
 
         try:
             sign.text_print.emit(self.ui.info, "[Download]正在下载视频")
-            video_data = self.session.get(video_url, headers=self.headers,timeout=10).content
+            video_data = self.session.get(video_url, headers=self.headers, timeout=10).content
             sign.text_print.emit(self.ui.info, "[Download]正在下载音频")
 
-            audio_data = self.session.get(audio_url, headers=self.headers,timeout=10).content
+            audio_data = self.session.get(audio_url, headers=self.headers, timeout=10).content
         except requests.exceptions.ConnectionError as e:
             if '远程主机强迫关闭了一个现有的连接' in e:
                 sign.text_print.emit(self.ui.info, "[Error]请求频次过多，请稍后再试试")
@@ -274,27 +275,25 @@ class bilibili_Download(QMainWindow):
         outfile_name = file_location + "/Bilibili_Output/" + path + "/" + video_name + "_" + quality_name + '.mp4'
         if os.path.exists(outfile_name):
             os.remove(outfile_name)
-        mergetask={
-            'outfile_name':str(outfile_name),
-            'file_location':file_location,
-            'path':path,
-            'bvid':str(dic['bvid']),
-            'title':str(dic['title']),
-            'num':str(dic['num'])
+        mergetask = {
+            'outfile_name': str(outfile_name),
+            'file_location': file_location,
+            'path': path,
+            'bvid': str(dic['bvid']),
+            'title': str(dic['title']),
+            'num': str(dic['num'])
         }
         self.mergeQueue.append(mergetask)
 
     def thread_start_download(self, dic):
 
-        thread = Thread(target=self.download, args=(self, dic))
+        thread = Thread(target=self.download, args=(dic,))
         thread.start()
-
-
 
     def detectmergeQueue(self):
         while 1:
             if self.videoCount == 0:
-                sign.text_print.emit(self.ui.info,"[info]全部音视频合成任务已结束...")
+                sign.text_print.emit(self.ui.info, "[info]全部音视频合成任务已结束...")
 
                 break
             elif len(self.mergeQueue) == 0:
@@ -305,8 +304,9 @@ class bilibili_Download(QMainWindow):
                 except Exception as e:
                     print(e)
                 self.mergeQueue.pop(0)
-                self.videoCount-=1
-    def merge_video(self,mergetask):
+                self.videoCount -= 1
+
+    def merge_video(self, mergetask):
         '''
         合并音视频 单线程阻塞
         :param mergetask：{
@@ -318,17 +318,21 @@ class bilibili_Download(QMainWindow):
                 'num':视频编号
             }
         '''
-        GPUAccelsParam='-hwaccel auto'
+        GPUAccelsParam = '-hwaccel auto'
         sign.text_print.emit(self.ui.info, "[Download]正在合并：" + mergetask['outfile_name'])
         subprocess.call(
-            mergetask['file_location'] + '/ffmpeg-master-latest-win64-gpl-shared/bin/ffmpeg.exe '+GPUAccelsParam +' -i '+mergetask['file_location'] + "/Bilibili_Output/" + mergetask['path'] + '/' + str(
+            mergetask[
+                'file_location'] + '/ffmpeg-master-latest-win64-gpl-shared/bin/ffmpeg.exe ' + GPUAccelsParam + ' -i ' +
+            mergetask['file_location'] + "/Bilibili_Output/" + mergetask['path'] + '/' + str(
                 mergetask['num']) + "_video.mp4"
             + ' -i ' + mergetask['file_location'] + '/Bilibili_Output/' + mergetask['path'] + '/' + str(
                 mergetask['num']) + "_audio.mp4" + ' -strict -2 -f mp4 '
             + mergetask['outfile_name'], shell=True)
         if not self.remainfile:
-            os.remove(mergetask['file_location'] + "/Bilibili_Output/" + mergetask['path'] + '/' + str(mergetask['num']) + "_video.mp4")
-            os.remove(mergetask['file_location'] + '/Bilibili_Output/' + mergetask['path'] + '/' + str(mergetask['num']) + "_audio.mp4")
+            os.remove(mergetask['file_location'] + "/Bilibili_Output/" + mergetask['path'] + '/' + str(
+                mergetask['num']) + "_video.mp4")
+            os.remove(mergetask['file_location'] + '/Bilibili_Output/' + mergetask['path'] + '/' + str(
+                mergetask['num']) + "_audio.mp4")
 
         sign.text_print.emit(self.ui.info, "[Download]音视频合并成功:" + str(mergetask['outfile_name']))
 
@@ -342,7 +346,7 @@ class bilibili_Download(QMainWindow):
 
             try:
                 if cookies['SESSDATA'] != "":
-                    self.islogin=True
+                    self.islogin = True
                     sign.text_print.emit(self.ui.info, "[info]已登录")
             except Exception as e:
                 print(e)
@@ -392,8 +396,8 @@ class bilibili_Download(QMainWindow):
     def thread_login(self):
         def login(self):
 
-            qrcode_key=self.get_qrcode()
-            cookies=self.detect_state(qrcode_key)
+            qrcode_key = self.get_qrcode()
+            cookies = self.detect_state(qrcode_key)
             if cookies != "":
                 self.cookies_dict.update(cookies)
                 pickle.dump(self.cookies_dict, open("./Bilibili_Output/" + "cookies.pkl", "wb"))
@@ -401,28 +405,28 @@ class bilibili_Download(QMainWindow):
             else:
                 sign.text_print.emit(self.ui.info, "[info]获取Cookies失败，点击登录按钮重试")
 
-
-        thread = Thread(target=login, args=(self, ))
+        thread = Thread(target=login, args=(self,))
         thread.start()
 
     def get_qrcode(self):
-        data = self.session.get('https://passport.bilibili.com/x/passport-login/web/qrcode/generate?source=main-fe-header',
-                           headers=self.headers).text
+        data = self.session.get(
+            'https://passport.bilibili.com/x/passport-login/web/qrcode/generate?source=main-fe-header',
+            headers=self.headers).text
         content = json.loads(data)
         qrcode_key = content['data']['qrcode_key']
         img = qrcode.make(content['data']['url'])
         img.save('qrcode.png')
         img = Image.open("qrcode.png")
-        img=img.resize((181,181))
+        img = img.resize((181, 181))
         img.save('qrcode.png')
-        frame=QImage('qrcode.png')
-        pix=QPixmap.fromImage(frame)
-        scene = self.ui.qrcode # 创建场景
+        frame = QImage('qrcode.png')
+        pix = QPixmap.fromImage(frame)
+        scene = self.ui.qrcode  # 创建场景
         scene.setPixmap(pix)
 
         return qrcode_key
 
-    def detect_state(self,qrcode_key):
+    def detect_state(self, qrcode_key):
         url = ''
         while True:
             sign.text_clear.emit(self.ui.state)
@@ -436,9 +440,9 @@ class bilibili_Download(QMainWindow):
                 dic = requests.utils.dict_from_cookiejar(data.cookies)
                 sign.text_print.emit(self.ui.state, "登录成功")
                 return dic
-            sign.text_print.emit(self.ui.state,message)
+            sign.text_print.emit(self.ui.state, message)
             if message == '二维码已失效':
-                qrcode_key=self.get_qrcode()
+                qrcode_key = self.get_qrcode()
 
             time.sleep(2)
 
@@ -506,6 +510,7 @@ class bilibili_Download(QMainWindow):
 
         return cookie_dict
 
+
 app = QApplication([])
 bd = bilibili_Download()
 bd.show()
@@ -513,4 +518,3 @@ app.exec()
 sys.exit(app.exec())
 
 'https://www.bilibili.com/bangumi/play/ep199612?theme=movie'
-
