@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>Form</class>
+    <widget class="QWidget" name="Form">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>709</width>
+                <height>565</height>
+            </rect>
+        </property>
+        <property name="font">
+            <font>
+                <pointsize>12</pointsize>
+            </font>
+        </property>
+        <property name="windowTitle">
+            <string>哔哩哔哩全站视频下载~~Ciallo</string>
+        </property>
+        <widget class="QLabel" name="label">
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>50</y>
+                    <width>71</width>
+                    <height>31</height>
+                </rect>
+            </property>
+            <property name="font">
+                <font>
+                    <pointsize>10</pointsize>
+                </font>
+            </property>
+            <property name="text">
+                <string>视频地址：</string>
+            </property>
+        </widget>
+        <widget class="Line" name="line">
+            <property name="geometry">
+                <rect>
+                    <x>7</x>
+                    <y>30</y>
+                    <width>671</width>
+                    <height>20</height>
+                </rect>
+            </property>
+            <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+            </property>
+        </widget>
+        <widget class="QLabel" name="label_2">
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>10</y>
+                    <width>131</width>
+                    <height>31</height>
+                </rect>
+            </property>
+            <property name="font">
+                <font>
+                    <pointsize>10</pointsize>
+                </font>
+            </property>
+            <property name="text">
+                <string>Step1:解析视频地址</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" name="add_url">
+            <property name="geometry">
+                <rect>
+                    <x>600</x>
+                    <y>50</y>
+                    <width>81</width>
+                    <height>31</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>添加</string>
+            </property>
+        </widget>
+        <widget class="QLabel" name="label_3">
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>290</y>
+                    <width>181</width>
+                    <height>21</height>
+                </rect>
+            </property>
+            <property name="font">
+                <font>
+                    <pointsize>10</pointsize>
+                </font>
+            </property>
+            <property name="text">
+                <string>Step2:选择清晰度下载</string>
+            </property>
+        </widget>
+        <widget class="Line" name="line_2">
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>310</y>
+                    <width>671</width>
+                    <height>16</height>
+                </rect>
+            </property>
+            <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+            </property>
+        </widget>
+        <widget class="QLabel" name="label_4">
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>330</y>
+                    <width>51</width>
+                    <height>31</height>
+                </rect>
+            </property>
+            <property name="font">
+                <font>
+                    <pointsize>10</pointsize>
+                </font>
+            </property>
+            <property name="text">
+                <string>清晰度：</string>
+            </property>
+        </widget>
+        <widget class="QComboBox" name="quality">
+            <property name="geometry">
+                <rect>
+                    <x>70</x>
+                    <y>330</y>
+                    <width>101</width>
+                    <height>31</height>
+                </rect>
+            </property>
+            <item>
+                <property name="text">
+                    <string>超清 4K</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>高清 1080P60</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>高清 1080P+</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>高清 1080P</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>高清 720P</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>清晰 480P</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>流畅 360P</string>
+                </property>
+            </item>
+        </widget>
+        <widget class="QPushButton" name="download">
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>520</y>
+                    <width>171</width>
+                    <height>31</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>下载</string>
+            </property>
+        </widget>
+        <widget class="QCheckBox" name="remain_file">
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>370</y>
+                    <width>171</width>
+                    <height>31</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>保留音视频分离文件</string>
+            </property>
+            <property name="checked">
+                <bool>false</bool>
+            </property>
+        </widget>
+        <widget class="QTextBrowser" name="info">
+            <property name="geometry">
+                <rect>
+                    <x>420</x>
+                    <y>320</y>
+                    <width>261</width>
+                    <height>231</height>
+                </rect>
+            </property>
+            <property name="font">
+                <font>
+                    <pointsize>8</pointsize>
+                </font>
+            </property>
+        </widget>
+        <widget class="QTextEdit" name="video_url_input">
+            <property name="geometry">
+                <rect>
+                    <x>80</x>
+                    <y>50</y>
+                    <width>511</width>
+                    <height>32</height>
+                </rect>
+            </property>
+            <property name="font">
+                <font>
+                    <pointsize>8</pointsize>
+                    <kerning>true</kerning>
+                </font>
+            </property>
+            <property name="acceptRichText">
+                <bool>false</bool>
+            </property>
+            <property name="placeholderText">
+                <string>请输入视频地址~~</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" name="openinexplorer">
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>480</y>
+                    <width>171</width>
+                    <height>31</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>打开下载文件夹</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" name="setting">
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>440</y>
+                    <width>81</width>
+                    <height>31</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>设置</string>
+            </property>
+        </widget>
+        <widget class="QTableWidget" name="video_list">
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>90</y>
+                    <width>671</width>
+                    <height>192</height>
+                </rect>
+            </property>
+            <property name="font">
+                <font>
+                    <pointsize>8</pointsize>
+                </font>
+            </property>
+            <property name="editTriggers">
+                <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+            <property name="rowCount">
+                <number>0</number>
+            </property>
+            <column>
+                <property name="text">
+                    <string>可选</string>
+                </property>
+            </column>
+            <column>
+                <property name="text">
+                    <string>标题</string>
+                </property>
+            </column>
+            <column>
+                <property name="text">
+                    <string>专辑名</string>
+                </property>
+            </column>
+        </widget>
+        <widget class="QPushButton" name="login">
+            <property name="geometry">
+                <rect>
+                    <x>100</x>
+                    <y>440</y>
+                    <width>81</width>
+                    <height>31</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>登录</string>
+            </property>
+        </widget>
+        <widget class="QTextBrowser" name="state">
+            <property name="geometry">
+                <rect>
+                    <x>210</x>
+                    <y>510</y>
+                    <width>181</width>
+                    <height>41</height>
+                </rect>
+            </property>
+        </widget>
+        <widget class="QLabel" name="qrcode">
+            <property name="geometry">
+                <rect>
+                    <x>210</x>
+                    <y>325</y>
+                    <width>181</width>
+                    <height>181</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string/>
+            </property>
+        </widget>
+    </widget>
+    <resources/>
+    <connections/>
+</ui>
