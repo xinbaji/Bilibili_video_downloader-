@@ -1,22 +1,21 @@
 import os
-import requests
-from requests import utils
-import json
-import pickle
+import time
 import random
-import subprocess
-from lxml import etree
 import re
 import sys
-import qrcode
-import time
+import subprocess
+from threading import Thread
 
+import requests
+import json
+import pickle
+import qrcode
+from lxml import etree
 from PIL import Image
 from PySide6.QtWidgets import QHBoxLayout, QTableWidgetItem, QApplication, QMainWindow, QTextBrowser
 from PySide6.QtCore import Signal, QObject
 from PySide6.QtGui import QImage, QPixmap
 from ui_main import Ui_Form
-from threading import Thread
 
 
 class signals(QObject):
@@ -393,19 +392,20 @@ class bilibili_Download(QMainWindow):
         path = str(os.getcwd() + r"\\Bilibili_Output\\")
         os.startfile(path)
 
+    
+    def login(self):
+
+        qrcode_key = self.get_qrcode()
+        cookies = self.detect_state(qrcode_key)
+        if cookies != "":
+            self.cookies_dict.update(cookies)
+            pickle.dump(self.cookies_dict, open("./Bilibili_Output/" + "cookies.pkl", "wb"))
+            return cookies
+        else:
+            sign.text_print.emit(self.ui.info, "[info]获取Cookies失败，点击登录按钮重试")
+            
     def thread_login(self):
-        def login(self):
-
-            qrcode_key = self.get_qrcode()
-            cookies = self.detect_state(qrcode_key)
-            if cookies != "":
-                self.cookies_dict.update(cookies)
-                pickle.dump(self.cookies_dict, open("./Bilibili_Output/" + "cookies.pkl", "wb"))
-                return cookies
-            else:
-                sign.text_print.emit(self.ui.info, "[info]获取Cookies失败，点击登录按钮重试")
-
-        thread = Thread(target=login, args=(self,))
+        thread = Thread(target=self.login)
         thread.start()
 
     def get_qrcode(self):
